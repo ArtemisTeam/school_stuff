@@ -126,17 +126,17 @@ def DownloadFile(fileUrl, urlopener):
         isDownOK = False
 
     return isDownOK
-
-
-#------------------------------------------------------------------------------
-def main():
-    isLoginOK=False
-    isLoginOK,json_string=Login2school("201212143", 'wanghe')
-    if isLoginOK:
-        print "OK\n",json_string
-    else:
-        print "Fail\n",json_string
-    # Login2school(201212201,19931008)
-
-if __name__ == '__main__':
-    main()
+#
+#
+# #------------------------------------------------------------------------------
+# def main():
+#     isLoginOK=False
+#     isLoginOK,json_string=Login2school("201212143", 'wanghe')
+#     if isLoginOK:
+#         print "OK\n",json_string
+#     else:
+#         print "Fail\n",json_string
+#     # Login2school(201212201,19931008)
+#
+# if __name__ == '__main__':
+#     main()
