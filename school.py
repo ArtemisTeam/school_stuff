@@ -63,7 +63,7 @@ def Login2school(username, password):
 #------------------------------------------------------------------------------
 # Generate json output
 def GenerateJson(scorehtml):
-    soup = BeautifulSoup(scorehtml.decode('gb2312'))
+    soup = BeautifulSoup(scorehtml.decode('gb2312').encode('utf8'))
     ctt = soup.get_text("|", strip=True)[220:-24]
     ctt = ctt.replace("|", "\n")[346:]
     it=ctt.split('\n')
