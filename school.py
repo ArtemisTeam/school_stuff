@@ -8,6 +8,7 @@ import urllib2
 import urllib
 import cookielib
 import json
+import StringIO
 from Recognize import recognize,binary
 #-----------------------------------------------------------------------------
 # Login inhttp://cityjw.dlut.edu.cn:7001
@@ -28,23 +29,25 @@ def Login2school(username, password):
     print 'crawler Login......'
 
     imgurl = r'http://cityjw.dlut.edu.cn:7001/ACTIONVALIDATERANDOMPICTURE.APPPROCESS'
-    DownloadFile(imgurl, urlopener)
+    isDownOK,img=DownloadFile(imgurl, urlopener)
     # file("./doing/code.jpg", "wb").write( urllib.urlopen(url).read())
     # authcode=raw_input('Please enter the authcode:')
-    authcode = recognize(binary('./doing/code.jpg'))
+    authcode = recognize(binary(img))
 
     # Send login/password to the site and get the session cookie
     values = {'WebUserNO': username, 'Password': password, 'Agnomen': authcode, 'submit.x': 0, 'submit.y': 0}
     urlcontent = urlopener.open(urllib2.Request(url, urllib.urlencode(values)))
     page = urlcontent.read()
-
+    print type(page)
+    page=page.decode('gb2312').encode('utf-8')
+    print type(page)
     # Make sure we are logged in, check the returned page content
     if 'ACTIONLOGOUT' not in page:
         print 'Login failed with username=%s, password=%s and authcode=%s' \
               % (username, password, authcode)
         output={}
         output["status"]="error"
-        json_string=json.dumps(output)
+        json_string=json.dumps(output,indent=4,ensure_ascii=False)
         return False,json_string
     else:
         print 'Login succeeded! with username=%s, password=%s and authcode=%s' \
@@ -63,7 +66,7 @@ def Login2school(username, password):
 #------------------------------------------------------------------------------
 # Generate json output
 def GenerateJson(scorehtml):
-    soup = BeautifulSoup(scorehtml.decode('gb2312').encode('utf8'))
+    soup = BeautifulSoup(scorehtml)
     ctt = soup.get_text("|", strip=True)[220:-24]
     ctt = ctt.replace("|", "\n")[346:]
     it=ctt.split('\n')
@@ -103,7 +106,7 @@ def GenerateJson(scorehtml):
             # print
     output["status"]="ok"
     output["info"]=courseinfo
-    json_string=json.dumps(output)
+    json_string=json.dumps(output,indent=4,ensure_ascii=False)
     return json_string
 
 
@@ -112,20 +115,17 @@ def GenerateJson(scorehtml):
 # Note: the fileUrl must be a valid file
 def DownloadFile(fileUrl, urlopener):
     isDownOk = False
-
+    output = StringIO.StringIO()
     try:
         if fileUrl:
-            outfile = open('./doing/code.jpg', 'wb')
-            outfile.write(urlopener.open(urllib2.Request(fileUrl)).read())
-            outfile.close()
-
+            output.write(urlopener.open(urllib2.Request(fileUrl)).read())
             isDownOK = True
         else:
             print 'ERROR: fileUrl is NULL!'
     except:
         isDownOK = False
 
-    return isDownOK
+    return isDownOK,output
 #
 #
 # #------------------------------------------------------------------------------
@@ -136,7 +136,7 @@ def DownloadFile(fileUrl, urlopener):
 #         print "OK\n",json_string
 #     else:
 #         print "Fail\n",json_string
-#     # Login2school(201212201,19931008)
+    # Login2school(201212201,19931008)
 #
 # if __name__ == '__main__':
 #     main()

@@ -1,9 +1,10 @@
 __author__ = 'Sylar'
 
-import Image
-
-def binary(f):
-    img = Image.open(f)
+from PIL import Image
+import StringIO
+def binary(data):
+    data.seek(0)
+    img = Image.open(data)
     #img = img.convert('1')
     pixdata = img.load()
     for y in xrange(img.size[1]):
