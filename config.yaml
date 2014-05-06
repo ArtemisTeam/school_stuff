@@ -1,0 +1,9 @@
+---
+name: csxyxzs1
+version: 1
+#...
+libraries:
+- name: bs4
+  version: "4.3.2"
+- name: lxml
+  version: "2.3.4"

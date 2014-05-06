@@ -235,4 +235,8 @@ def testlogin(username, password):
 
 
 if __name__ == "__main__":
-    pass
+    # testlogin('201212143', 'wanghe')
+    # flag, json_string = grades('201212143', 'wanghe')
+    # print json_string.encode('utf-8')
+    flag, json_string = schedule('201212143', 'wanghe')
+    # print json_string
