@@ -1,4 +1,4 @@
-__author__ = 'Sylar'
+__author__ = 'halfcrazy'
 
 from PIL import Image
 import StringIO
