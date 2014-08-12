@@ -4,7 +4,7 @@ __author__ = 'halfcrazy'
 
 from flask import Flask, request
 import xml.etree.ElementTree as ET
-from school import schedule, grades
+from school import teacher_schedule, schedule, grades
 from kuaidi import getposturl
 
 app = Flask(__name__)
@@ -46,6 +46,11 @@ def parse_schedule_get():
     flag, json_string = schedule(name, password)
     return json_string
 
+@app.route('/teacher_schedule', methods=['GET'])
+def parse_teacher_schedule_get():
+    id = request.args.get('id')
+    flag, json_string = teacher_schedule(id)
+    return json_string
 
 def parse_msg(rawmsgstr):
     root = ET.fromstring(rawmsgstr)
@@ -55,4 +60,4 @@ def parse_msg(rawmsgstr):
     return msg
 
 if __name__ == "__main__":
-    app.run()
+    app.run(host="0.0.0.0",port=80,debug=True)
